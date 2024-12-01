@@ -249,6 +249,137 @@ This project provides an API for creating, managing, and testing projects.
 -  - **Method:** `POST`
 -  - **Headers:**
 - - `Content-Type: multipart/form-data`
+ ```
+
+```
+### Payment APIs
+
+#### Initiate Payment
+
+- **Method:** `POST`
+- **API:** `localhost:5000/api/payments/initiate`
+- **Body:**
+
+    ```json
+    {
+        "projectId": "674c046f891f72c121d8386d",
+        "amount": 4500,
+        "currency": "usd"
+    }
+    ```
+
+- **Response:**
+
+    ```json
+    {
+        "message": "Payment initiated successfully",
+        "clientSecret": "pi_3QR8LYCDKllTQ2iB0VBmpFcg_secret_ihUb655QNlpWkEgoapSsbSAfJ",
+        "payment": {
+            "projectId": "674c046f891f72c121d8386d",
+            "amount": 4500,
+            "currency": "usd",
+            "status": "Pending",
+            "stripePaymentId": "pi_3QR8LYCDKllTQ2iB0VBmpFcg",
+            "stripeClientSecret": "pi_3QR8LYCDKllTQ2iB0VBmpFcg_secret_ihUb655QNlpWkEgoapSsbSAfJ",
+            "_id": "674c1ba4a2a4e6901045d79a",
+            "createdAt": "2024-12-01T08:17:40.712Z",
+            "updatedAt": "2024-12-01T08:17:40.712Z",
+            "__v": 0
+        }
+    }
+    ```
+
+#### Get All Payments
+
+- **Method:** `GET`
+- **API:** `localhost:5000/api/payments/all`
+- **Headers:**
+    - `Authorization: Bearer <token>`
+
+- **Response:**
+
+    ```json
+    {
+        "message": "Payments fetched successfully",
+        "payments": [
+            {
+                "_id": "674c1adaa2a4e6901045d790",
+                "projectId": {
+                    "_id": "674c05d8f4c16a34b99d647d",
+                    "description": "Designing and testing a drone system for autonomous package delivery in urban areas."
+                },
+                "amount": 10000.5,
+                "currency": "usd",
+                "status": "Pending",
+                "stripePaymentId": "pi_3QR8IICDKllTQ2iB1BOCLUbQ",
+                "createdAt": "2024-12-01T08:14:18.818Z"
+            },
+            {
+                "_id": "674c1b77a2a4e6901045d795",
+                "projectId": {
+                    "_id": "674c0548f4c16a34b99d6461",
+                    "description": "Launching a blog platform focusing on health tips, recipes, and fitness advice."
+                },
+                "amount": 2500,
+                "currency": "usd",
+                "status": "Pending",
+                "stripePaymentId": "pi_3QR8KpCDKllTQ2iB1mahGLoi",
+                "createdAt": "2024-12-01T08:16:55.029Z"
+            },
+            {
+                "_id": "674c1ba4a2a4e6901045d79a",
+                "projectId": {
+                    "_id": "674c046f891f72c121d8386d",
+                    "description": "Revamping the existing corporate website with a modern design and improved user experience."
+                },
+                "amount": 4500,
+                "currency": "usd",
+                "status": "Pending",
+                "stripePaymentId": "pi_3QR8LYCDKllTQ2iB0VBmpFcg",
+                "createdAt": "2024-12-01T08:17:40.712Z"
+            }
+        ],
+        "pagination": {
+            "page": 1,
+            "limit": 10
+        }
+    }
+    ```
+
+#### Update Payment by ID
+
+- **Method:** `PUT`
+- **API:** `localhost:5000/api/payments/update`
+- **Body:**
+
+    ```json
+    {
+        "paymentId": "674c1adaa2a4e6901045d790",
+        "status": "Paid"
+    }
+    ```
+
+- **Response:**
+
+    ```json
+    {
+        "message": "Payment status updated to Paid",
+        "payment": {
+            "_id": "674c1adaa2a4e6901045d790",
+            "projectId": "674c05d8f4c16a34b99d647d",
+            "amount": 10000.5,
+            "currency": "usd",
+            "status": "Paid",
+            "stripePaymentId": "pi_3QR8IICDKllTQ2iB1BOCLUbQ",
+            "stripeClientSecret": "pi_3QR8IICDKllTQ2iB1BOCLUbQ_secret_xICNY8JEKoKJ96lJ4jDoyQzlI",
+            "createdAt": "2024-12-01T08:14:18.818Z",
+            "updatedAt": "2024-12-01T08:14:18.818Z",
+            "__v": 0
+        }
+    }
+    ```
+
+
 
     
 
