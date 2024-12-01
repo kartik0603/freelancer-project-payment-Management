@@ -12,7 +12,7 @@ connectDB = require("./config/db.js");
 
 const app = express();
 
-// Middleware
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
@@ -21,6 +21,7 @@ app.use(express.static("public"));
 
 app.use("/api/users", userRouter);
 app.use("/api/projects", projectRouter);
+app.use("/api/payments", paymentRouter);
 
 
 app.get("/", (req, res) => {
@@ -29,7 +30,7 @@ app.get("/", (req, res) => {
 
 
 
-// Error handling
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res
@@ -37,7 +38,7 @@ app.use((err, req, res, next) => {
     .json({ message: "Something went wrong!", error: err.message });
 });
 
-// Set the server to listen on a port
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
