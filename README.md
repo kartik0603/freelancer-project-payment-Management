@@ -1,49 +1,86 @@
-# Testing Project API
 
-This project provides an API for creating, managing, and testing projects.
 
-## Features
+## Project Functionality Brief
 
-- **Create Project:** Allows the creation of projects with details such as title, description, deadline, budget, and status.
-- **Get All Projects:** Fetch all available projects.
-- **Get Project by ID:** Retrieve a specific project using its ID.
-- **Update Project:** Update details of an existing project.
-- **Delete Project:** Delete a project using its ID.
-- **Export Projects:** Export project data in specific formats like CSV, JSON, or Excel.
-- **Import Projects:** Import project data from files like CSV, JSON, or Excel.
+This project is a Freelancer Project and Payment Management API, built with Node.js, using Express for the server framework and MongoDB with Mongoose for the database management. The application handles user management, project tracking, payment integration (via Stripe), file handling, and more.
 
-## Technologies Used
+### Key Functionalities
 
-- **Node.js:** JavaScript runtime for server-side development.
-- **Express.js:** Framework for building web applications and APIs.
-- **MongoDB:** NoSQL database for storing project data.
-- **Mongoose:** ODM library for MongoDB and Node.js.
+#### User Management
 
-## Installation
+- **Authentication:** Users can sign up and log in to the system. Passwords are hashed and stored securely using bcrypt for encryption. JWT (JSON Web Tokens) is used to authenticate and authorize users.
+- **Roles:** Users can have different roles, such as Client , Admin  certain routes are protected based on these roles. Role-based access control is managed using roleCheck middleware.
 
-1. Clone the repository:
+#### Project Management
 
-    ```bash
-    git clone https://github.com/your-username/testing-project-api.git
-    ```
+- **Create and Update Projects:** Users (specifically Clients and Admins) can create and update projects. These projects have details like project name, description, status, etc.
+- **Export and Import Projects:** The API allows exporting project data in CSV format using fast-csv, as well as importing project data from a CSV file to the database with the help of multer for file handling.
+- **Delete Projects:** Admins have the ability to delete projects by project ID.
+- **Project Status:** The status of the project (e.g., ongoing, completed) can be updated.
 
-2. Navigate to the project directory:
+#### Payment Integration
 
-    ```bash
-    cd testing-project-api
-    ```
+- **Stripe Integration:** Payments are managed through Stripe. When a payment is initiated, the payment details are saved in the database, and a payment intent is created on Stripe.
+- **Payment Status Updates:** Payments can have statuses (Pending, Paid, Failed), and these can be updated through the API. The stripe payment ID and client secret are saved in the database to manage payment progress.
+- **Payment Retrieval:** Payments can be fetched by their ID or a list of all payments can be retrieved with associated project details.
 
-3. Install the dependencies:
+#### Email Notifications
 
-    ```bash
-    npm install
-    ```
+- **Nodemailer:** Used for sending email notifications. This can be used to send alerts for successful project updates, payment receipts, or other related events.
+
+#### Middleware
+
+- **Authentication and Authorization:** Custom middleware such as `auth.middleware.js` ensures that users are authenticated before accessing certain routes.
+- **Role-Based Access Control:** `roleCheck` middleware restricts certain routes to specific user roles, ensuring that only authorized users can access certain resources (e.g., only Admins can access all payment data or delete projects).
+- **Helmet:** The application uses helmet to enhance security by setting various HTTP headers (e.g., preventing cross-site scripting, clickjacking, etc.).
+- **Body Parser:** `body-parser` is used to parse incoming request bodies in a middleware, making it easier to handle data in POST requests (especially for form submissions or JSON payloads).
+
+#### Logging
+
+- **Morgan:** Used for logging HTTP requests, which helps with debugging and monitoring application performance during development or in production.
+
+#### CORS (Cross-Origin Resource Sharing)
+
+- **CORS:** Allows the application to accept requests from different domains or origins, making it easier to handle cross-origin requests when the API is consumed by other services or frontend applications hosted on different servers.
+
+#### Environment Variables
+
+- **dotenv:** Used to load environment variables from a `.env` file. These variables might include sensitive information like the Stripe secret key, database connection strings, or other configurations that should not be hardcoded in the application.
+
+### Tech Stack
+
+#### Backend
+
+- Node.js and Express.js for the server.
+- MongoDB (via Mongoose) for database storage.
+- Stripe for payment processing.
+- Nodemailer for email notifications.
+
+#### Middleware
+
+- Custom authentication, authorization, and file handling middleware.
+- Helmet for security headers.
+- Morgan for logging.
+- CORS for cross-origin support.
+
+#### Utilities
+
+- bcrypt for password hashing.
+- jsonwebtoken for JWT-based authentication.
+- multer for file uploads.
+- fast-csv for CSV export/import functionality.
+
 
 4. Create a `.env` file in the root directory and add your environment variables:
 
     ```
     MONGO_URI=your_mongodb_uri
     JWT_SECRET=your_jwt_secret
+    EMAIL= your email
+    EMAIL_PASSWORD= email password
+    STRIPE_SECRET_KEY = your stripe key
+    PORT=5000
+    
     ```
 
 ## Usage
