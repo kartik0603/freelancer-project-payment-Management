@@ -24,7 +24,7 @@ app.use("/api/projects", projectRouter);
 
 
 app.get("/", (req, res) => {
-  res.send("Quiz Application");
+  res.send("Freelancer Project And PAyment Management API");
 });
 
 
