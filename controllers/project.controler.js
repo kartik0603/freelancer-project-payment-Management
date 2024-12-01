@@ -56,6 +56,97 @@ const getAllProjects = async (req, res) => {
   }
 };
 
+// Delete a project by its ID
+const deleteProject = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+
+    if (!projectId) {
+      return res.status(400).json({ error: 'Project ID is required.' });
+    }
+
+    // Find the project by ID and delete it
+    const project = await Project.findByIdAndDelete(projectId);
+
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found.' });
+    }
+
+    res.status(200).json({
+      message: 'Project deleted successfully.',
+      project,
+    });
+
+  } catch (error) {
+    console.error('Error deleting project:', error);
+    handleError(res, 'Failed to delete project. Please try again later.');
+  }
+};
+
+//  Update a project by its ID
+const updateProject = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+    const { name, description, status, budget } = req.body;
+
+    if (!projectId) {
+      return res.status(400).json({ error: 'Project ID is required.' });
+    }
+
+    // Validate input fields if necessary
+    if (!name && !description && !status && !budget) {
+      return res.status(400).json({ error: 'At least one field (name, description, status, budget) must be provided for update.' });
+    }
+
+    // Find the project by ID and update it
+    const project = await Project.findByIdAndUpdate(
+      projectId,
+      { name, description, status, budget }, // Update only the fields provided in the request body
+      { new: true } // Return the updated document
+    );
+
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found.' });
+    }
+
+    res.status(200).json({
+      message: 'Project updated successfully.',
+      project,
+    });
+
+  } catch (error) {
+    console.error('Error updating project:', error);
+    handleError(res, 'Failed to update project. Please try again later.');
+  }
+};
+
+// Get a project by its ID
+const getProjectById = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+
+    if (!projectId) {
+      return res.status(400).json({ error: 'Project ID is required.' });
+    }
+
+    // Find the project by ID
+    const project = await Project.findById(projectId);
+
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found.' });
+    }
+
+    res.status(200).json({
+      message: 'Project details fetched successfully.',
+      project,
+    });
+
+  } catch (error) {
+    console.error('Error fetching project by ID:', error);
+    handleError(res, 'Failed to fetch project details. Please try again later.');
+  }
+};
+
 // Export all projects 
 const exportProjectToCSV = async (req, res) => {
   try {
@@ -159,6 +250,9 @@ const importProjectFromCSV = async (req, res) => {
 module.exports = {
   createProject,
   getAllProjects,
+  deleteProject,
+  updateProject,
+  getProjectById,
   exportProjectToCSV,
   importProjectFromCSV,
 };
