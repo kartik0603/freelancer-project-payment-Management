@@ -242,3 +242,14 @@ This project provides an API for creating, managing, and testing projects.
     ```json
     {
         "message": "Projects exported successfully.",
+    }
+   ```
+### Import Projects
+- **URL:** `/api/projects/import`
+-  - **Method:** `POST`
+-  - **Headers:**
+- - `Content-Type: multipart/form-data`
+
+    
+
+    
