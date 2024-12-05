@@ -5,6 +5,9 @@ const path = require("path");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
+const helmet = require("helmet");  
+const morgan = require("morgan"); 
+
 const userRouter = require("./routes/user.route.js");
 const projectRouter = require("./routes/project.route.js");
 const paymentRouter = require("./routes/payment.route.js");
@@ -17,6 +20,11 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.static("public"));
+
+app.use(helmet());
+
+
+app.use(morgan("dev"));
 
 
 app.use("/api/users", userRouter);
