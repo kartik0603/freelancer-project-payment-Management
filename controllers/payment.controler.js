@@ -5,13 +5,13 @@ const Project = require("../models/project.schema.js");
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-// error handling
+// error Handle
 const handleError = (res, message, status = 500) => {
   console.error(message);
   return res.status(status).json({ error: message });
 };
 
-// Create a payment and initiate Stripe payment 
+//  payment 
 const createPayment = async (req, res) => {
   try {
       const { projectId, amount, currency } = req.body;
@@ -31,14 +31,14 @@ const createPayment = async (req, res) => {
           return res.status(404).json({ error: 'Project not found.' });
       }
 
-      // Create a Stripe payment 
+      
       const paymentIntent = await stripe.paymentIntents.create({
           amount: Math.round(amount * 100), 
           currency: currency.toLowerCase(),
           metadata: { projectId: projectId },
       });
 
-      // Save payment 
+      // Save 
       const payment = new Payment({
           projectId,
           amount,
@@ -63,7 +63,7 @@ const createPayment = async (req, res) => {
 };
 
 
-// Update payment status
+// Update PAyment
 const updatePaymentStatus = async (req, res) => {
   try {
     const { paymentId, status } = req.body;

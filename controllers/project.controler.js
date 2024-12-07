@@ -35,7 +35,7 @@ const createProject = async (req, res) => {
   }
 };
 
-// Get all projects for a user
+// Get all 
 const getAllProjects = async (req, res) => {
   try {
     const projects = await Project.find({ createdBy: req.user.id }).sort({
@@ -56,7 +56,7 @@ const getAllProjects = async (req, res) => {
   }
 };
 
-// Delete a project by its ID
+// Delete 
 const deleteProject = async (req, res) => {
   try {
     const { projectId } = req.params;
@@ -65,7 +65,7 @@ const deleteProject = async (req, res) => {
       return res.status(400).json({ error: 'Project ID is required.' });
     }
 
-    // Find the project by ID and delete it
+   
     const project = await Project.findByIdAndDelete(projectId);
 
     if (!project) {
@@ -83,7 +83,7 @@ const deleteProject = async (req, res) => {
   }
 };
 
-//  Update a project by its ID
+//  Update
 const updateProject = async (req, res) => {
   try {
     const { projectId } = req.params;
@@ -93,7 +93,7 @@ const updateProject = async (req, res) => {
       return res.status(400).json({ error: 'Project ID is required.' });
     }
 
-    // Validate input fields if necessary
+    
     if (!name && !description && !status && !budget) {
       return res.status(400).json({ error: 'At least one field (name, description, status, budget) must be provided for update.' });
     }
@@ -120,7 +120,7 @@ const updateProject = async (req, res) => {
   }
 };
 
-// Get a project by its ID
+// Get by ID
 const getProjectById = async (req, res) => {
   try {
     const { projectId } = req.params;
@@ -129,7 +129,7 @@ const getProjectById = async (req, res) => {
       return res.status(400).json({ error: 'Project ID is required.' });
     }
 
-    // Find the project by ID
+   
     const project = await Project.findById(projectId);
 
     if (!project) {
@@ -147,7 +147,7 @@ const getProjectById = async (req, res) => {
   }
 };
 
-// Export all projects 
+// Export 
 const exportProjectToCSV = async (req, res) => {
   try {
     const projects = await Project.find({ createdBy: req.user.id });
@@ -159,7 +159,7 @@ const exportProjectToCSV = async (req, res) => {
     const filePath = path.join(__dirname, "../uploads/projects.csv");
     const ws = fs.createWriteStream(filePath);
 
-    // Write data to CSV
+    
     csv
       .write(
         projects.map((p) => p.toObject()),
@@ -168,7 +168,10 @@ const exportProjectToCSV = async (req, res) => {
       .pipe(ws)
       .on("finish", () => {
         res.download(filePath, "projects.csv", () => {
+
+
           // Delete the file after sending it to the client
+
           fs.unlink(filePath, (err) => {
             if (err) console.error("Error deleting file:", err);
           });
@@ -210,7 +213,7 @@ const importProjectFromCSV = async (req, res) => {
       stream.on("error", reject);
     });
 
-    //insert the projects into the database
+    //projects in  database
     if (projects.length > 0) {
       try {
         console.log("Attempting to insert projects into the database...");

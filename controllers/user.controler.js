@@ -7,11 +7,11 @@ const { hashPassword, comparePassword } = require("../secure/hashPassword.js");
 const path = require("path");
 
 
-// User Registration
+
 const register = async (req, res) => {
   const { name, email, password, role } = req.body;
 
-  // Basic validation
+
   if (!email || !password || !name || !role) {
     return res.status(400).json({ message: "All fields are required" });
   }
@@ -22,16 +22,16 @@ const register = async (req, res) => {
   }
 
   try {
-    // Check if user already exists
+    
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Hash the password before saving
+
     const hashedPassword = await hashPassword(password);
 
-    // Create the user
+   
     const user = await User.create({
       name,
       email,
@@ -52,7 +52,7 @@ const register = async (req, res) => {
   }
 };
 
-// User Login
+
 const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -84,7 +84,7 @@ const login = async (req, res) => {
   }
 };
 
-// Forget Password
+
 const forgetPassword = async (req, res) => {
   const { email } = req.body;
 
@@ -124,7 +124,7 @@ const forgetPassword = async (req, res) => {
       from: `"Support" <${process.env.EMAIL}>`,
       to: email,
       subject: "Password Reset Request",
-      // text: `${req.protocol}://${req.get("host")}/api/users/reset-password/${token}`,
+     
       html: `
         <p>You requested to reset your password. Click the link below to reset it:</p>
         <a href="${req.protocol}://${req.get(
@@ -147,7 +147,7 @@ const forgetPassword = async (req, res) => {
   }
 };
 
-// Reset Password
+
 const resetPassword = async (req, res) => {
   const { token } = req.params;
   const { password } = req.body;
@@ -167,7 +167,6 @@ const resetPassword = async (req, res) => {
         .send({ message: "Invalid token or user not found" });
     }
 
-    // Update password
     user.password = await hashPassword(password);
     await user.save();
 
